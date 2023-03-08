@@ -1,13 +1,28 @@
 <script lang="ts">
 	import { generateColorHEX } from './helpers/colors'
 
-  let color = generateColorHEX()
+  let color = getQuery('color') ? '#' + getQuery('color') : generateColorHEX()
   let showedTooltipCount = 0
 
   $: isTooltipShown = showedTooltipCount > 0
+  window.document.title = 'Shishir'
+
+  function getQuery(key: string) {
+    const query = new URLSearchParams(window.location.search)
+    return query.get(key)
+  }
+
+  function setQuery() {
+    const url = new URL(window.location.href)
+    url.searchParams.set('color', color.replace(/#/, ''))
+    window.history.pushState({}, "", url)
+  }
+
+  setQuery()
 
   const generate = () => {
     color = generateColorHEX()
+    setQuery()
   }
 
   const showTooltip = () => {
@@ -36,9 +51,14 @@
     class='wrapper'
   >
   <div class='container'>
-    Press space to generate color
     <button
-      class='copy-button'
+      on:click={generate}
+      class='button'
+    >
+      Generate new color
+    </button>
+    <button
+      class='button'
       on:click={copy}
     >
       {color}
@@ -55,7 +75,7 @@
 <style>
   .wrapper {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,26 +89,32 @@
     padding: 20px;
     background: #fff;
     color: #000;
-    border-radius: 8px;
+    border-radius: 12px;
   }
-  .copy-button {
+  .button {
     position: relative;
     background: transparent;
     border: 1px solid black;
-    border-radius: 4px;
+    border-radius: 8px;
+    color: inherit;
+    padding: 12px;
+    font-size: 20px;
   }
-  .copy-button:hover {
+  .button:hover {
     cursor: pointer;
     background: #eee;
+  }
+  .button:active {
+    transform: translateY(2px);
   }
   .tooltip {
     position: absolute;
     background: black;
-    border-radius: 4px;
+    border-radius: 8px;
     color: white;
     width: max-content;
-    padding: 8px;
-    top: 32px;
+    padding: 12px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
   }
