@@ -5,7 +5,6 @@
   let showedTooltipCount = 0
 
   $: isTooltipShown = showedTooltipCount > 0
-  window.document.title = 'Shishir'
 
   function getQuery(key: string) {
     const query = new URLSearchParams(window.location.search)
