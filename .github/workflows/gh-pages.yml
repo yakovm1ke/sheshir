@@ -1,5 +1,8 @@
 name: Deploy
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: ["master"]
@@ -35,7 +38,5 @@ jobs:
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        ACCESS_TOKEN: ${{ secrets.GH_DOCS }}
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: dist # The folder the action should deploy.
-        CLEAN: true
+        folder: dist # The folder the action should deploy.
+        clean: true
